@@ -1,0 +1,33 @@
+.
+├── ArquiteturaLimpa
+├── Shoop.APi
+│   ├── Controllers
+│   ├── Program.cs
+│   ├── Properties
+│   │   └── launchSettings.json
+│   ├── Shoop.APi.csproj
+│   ├── Shoop.APi.http
+│   ├── appsettings.Development.json
+│   └── appsettings.json
+├── Shoop.Application
+│   ├── DTOs
+│   ├── Interfaces
+│   ├── Mappings
+│   ├── Services
+│   └── Shoop.Application.csproj
+├── Shoop.CrossCutting
+│   ├── Class1.cs
+│   ├── IoC
+│   └── Shoop.CrossCutting.csproj
+├── Shoop.Domain
+│   ├── Entities
+│   ├── Interfaces
+│   └── Shoop.Domain.csproj
+├── Shoop.Infrastructure
+│   ├── Context
+│   ├── EntitiesConfiguration
+│   ├── Repositories
+│   └── Shoop.Infrastructure.csproj
+└── Shoop.sln
+
+18 directories, 13 files

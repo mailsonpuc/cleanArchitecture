@@ -1,0 +1,6 @@
+@Shoop.APi_HostAddress = http://localhost:5149
+
+GET {{Shoop.APi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
