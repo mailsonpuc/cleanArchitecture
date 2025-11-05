@@ -35,7 +35,7 @@ namespace Shoop.Infrastructure.Repositories
         {
             try
             {
-                var categorias = await _categoryContext.Categories.ToListAsync();
+                var categorias = await _categoryContext.Categories.AsNoTracking().ToListAsync();
                 return categorias;
             }
             catch (System.Exception)
