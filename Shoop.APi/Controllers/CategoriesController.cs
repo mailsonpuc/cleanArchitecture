@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Shoop.Application.DTOs;
 using Shoop.Application.Interfaces;
 using Shoop.Domain.Entities;
 
+
 namespace Shoop.APi.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
     {
@@ -22,7 +20,7 @@ namespace Shoop.APi.Controllers
 
 
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> Get()
         {
             try
@@ -37,6 +35,7 @@ namespace Shoop.APi.Controllers
         }
 
 
+
         [HttpGet("{id}", Name = "GetCategoria")]
         public async Task<ActionResult<Category>> Get(int id)
         {
@@ -44,8 +43,9 @@ namespace Shoop.APi.Controllers
 
             if (categoria == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"Categoria com id={id} não encontrado." });
             }
+
             return Ok(categoria);
         }
 
@@ -78,7 +78,7 @@ namespace Shoop.APi.Controllers
 
             if (id != categoriaDto.Id)
             {
-                return BadRequest();
+                return NotFound(new { message = "Categoria não encontrada." });
             }
 
             await _categoryService.Update(categoriaDto);
@@ -91,13 +91,25 @@ namespace Shoop.APi.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Category>> Delete(int id)
         {
-            var categoriaDto = await _categoryService.GetById(id);
-            if (categoriaDto == null)
+            try
             {
-                return NotFound();
+                var categoriaDto = await _categoryService.GetById(id);
+                
+                if (categoriaDto == null)
+                {
+                    return NotFound(new { message = "Categoria não encontrada" });
+                }
+
+                await _categoryService.Remove(id);
+
+                return Ok(new { message = "Categoria removida com sucesso." });
             }
-            await _categoryService.Remove(id);
-            return Ok(categoriaDto);
+
+            catch (System.Exception)
+            {
+                return BadRequest(new { message = "Não foi possivel remove a categoria" });
+            }
+
         }
 
 

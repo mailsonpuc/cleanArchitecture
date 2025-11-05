@@ -1,0 +1,45 @@
+
+
+/* esconde o svg padrao */
+.swagger-ui .topbar .link >svg {
+    visibility: hidden;
+}
+
+/* cor no header */
+.swagger-ui .topbar {
+    background-color: rgb(131, 7, 131);
+}
+
+
+/*imagem no link */
+.swagger-ui .topbar .link {
+    background: url('/code.svg') no-repeat;
+    background-size: contain;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+
+
+/* Força a cor do texto do título do grupo de endpoints (ex: 'Users') */
+.swagger-ui .opblock-tag {
+    color: #b808cf !important; /* Texto branco */
+}
+
+
+/* Garante que o ícone de expansão também seja visível */
+.swagger-ui .opblock-tag path {
+    fill: #423636 !important; /* Preenche os ícones internos com branco */
+}
+
+
+body, :root {
+    /* background: url('/giphy.gif') no-repeat center center fixed;
+    background-size: cover;  */
+    background-color:#d8c3db ;
+}
+
+.swagger-ui .scheme-container {
+    background-color: transparent; /* Remove o fundo cinza escuro */
+}

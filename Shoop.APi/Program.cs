@@ -4,34 +4,30 @@ using Shoop.CrossCutting.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add services
 builder.Services.AddControllers();
-
-//usando no Shoop.APi
 builder.Services.AddInfrastructureAPI(builder.Configuration);
-
 builder.Services.AddEndpointsApiExplorer();
 
-
-//System.Text.Json 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-
-
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "APi Clean Archtecture", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo 
+    { 
+        Title = "Shoop API - Clean Architecture", 
+        Version = "v1" 
+    });
 
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Bearer JWT ",
+        Description = "Enter 'Bearer' [space] and then your valid token.",
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -45,28 +41,27 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
-
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI(opt =>
-{
-    opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    opt.RoutePrefix = string.Empty; // Swagger UI na raiz
-});
-
-
-
+// Middleware order is important
 app.UseHttpsRedirection();
-
+app.UseStaticFiles(); // Serve custom.css and code.svg
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseSwagger();
 
+// ✅ Serve Swagger directly at the root (http://localhost:5149)
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Shoop API v1");
+    options.RoutePrefix = ""; // <-- Swagger at the root
+    options.InjectStylesheet("/custom.css"); // load directly from wwwroot
+});
+
+app.MapControllers();
 app.Run();
