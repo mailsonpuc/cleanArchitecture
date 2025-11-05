@@ -1,11 +1,9 @@
-
-
 using System.ComponentModel.DataAnnotations;
-using static Shoop.Application.DTOs.LinkDto;
+
 
 namespace Shoop.Application.DTOs
 {
-    public class CategoryDTO : LinksHATEOAS
+    public class CategoryInputDTO
     {
         public int Id { get; set; }
 

@@ -8,7 +8,7 @@ namespace Shoop.Application.Interfaces
     {
         Task<IEnumerable<CategoryDTO>> GetCategories();
         Task<CategoryDTO> GetById(int? id);
-        Task Add(CategoryDTO categoryDTO);
+        Task Add(CategoryInputDTO categoryDTO); //CategoryInputDTO limpo sem hateos
         Task Update(CategoryDTO categoryDTO);
         Task Remove(int? id);
     }

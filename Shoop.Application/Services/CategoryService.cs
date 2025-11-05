@@ -21,12 +21,16 @@ namespace Shoop.Application.Services
 
 
 
-        public async Task Add(CategoryDTO categoryDTO)
-        {
+        // public async Task Add(CategoryDTO categoryDTO)
+        // {
+        //     var categoryEntity = _mapper.Map<Category>(categoryDTO);
+        //     await _categoryRepository.CreateAsync(categoryEntity);
+        // }
 
+        public async Task Add(CategoryInputDTO categoryDTO)
+        {
             var categoryEntity = _mapper.Map<Category>(categoryDTO);
             await _categoryRepository.CreateAsync(categoryEntity);
-
         }
 
 
@@ -65,5 +69,7 @@ namespace Shoop.Application.Services
             var categoryEntity = _mapper.Map<Category>(categoryDTO);
             await _categoryRepository.UpdateAsync(categoryEntity);
         }
+
+
     }
 }
