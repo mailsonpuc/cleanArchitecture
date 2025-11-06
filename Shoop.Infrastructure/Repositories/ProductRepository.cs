@@ -1,20 +1,39 @@
-
-
 using Microsoft.EntityFrameworkCore;
 using Shoop.Domain.Entities;
 using Shoop.Domain.Interfaces;
 using Shoop.Infrastructure.Context;
 
+
 namespace Shoop.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private ApplicationDbContext _productContext;
+        private readonly ApplicationDbContext _productContext;
 
         public ProductRepository(ApplicationDbContext productContext)
         {
             _productContext = productContext;
         }
+
+
+        public async Task<IEnumerable<Product>> GetProductsAsync()
+        {
+            // Este método não inclui a Category. Pode ser usado por serviços que não precisam do detalhe da categoria.
+            return await _productContext.Products.AsNoTracking().ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<Product>> GetProductsWithCategoryAsync()
+        {
+            // Usa .Include() para carregar a entidade Category junto com o Product.
+            return await _productContext.Products
+                                        .Include(p => p.Category)
+                                        .AsNoTracking()
+                                        .ToListAsync();
+        }
+
+
+        // --- Métodos de CRUD ---
 
         public async Task<Product> CreateAsync(Product product)
         {
@@ -25,25 +44,15 @@ namespace Shoop.Infrastructure.Repositories
 
         public async Task<Product> GetByIdAsync(int? id)
         {
-
-#pragma warning disable CS8603 // Possible null reference return.
-            return await _productContext.Products.FindAsync(id);
-#pragma warning restore CS8603 // Possible null reference return.
+            #pragma warning disable CS8603
+            // É comum adicionar .Include() aqui se o GetById precisar da Category
+            return await _productContext.Products
+                .Include(p => p.Category)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id); 
+            #pragma warning restore CS8603
         }
-
-        public async Task<IEnumerable<Product>> GetProductsAsync()
-        {
-            try
-            {
-                var products = await _productContext.Products.ToListAsync();
-                return products;
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
+        
         public async Task<Product> RemoveAsync(Product product)
         {
             _productContext.Remove(product);

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.OpenApi.Models;
 using Shoop.CrossCutting.IoC;
-using System.Reflection; // ⬅️ Using Adicionado
+using System.Reflection; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,15 +88,24 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // Serve custom.css and code.svg
 app.UseAuthorization();
 
-app.UseSwagger();
 
-// Serve Swagger directly at the root (http://localhost:5149)
+app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Shoop API v1");
     options.RoutePrefix = ""; // <-- Swagger at the root
     options.InjectStylesheet("/custom.css"); // load directly from wwwroot
 });
+
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Server = "Nao Interessa";
+    // context.Response.Headers.Remove("Server"); 
+   
+    await next();
+});
+
 
 app.MapControllers();
 app.Run();

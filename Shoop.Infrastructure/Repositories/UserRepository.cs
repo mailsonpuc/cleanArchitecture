@@ -36,7 +36,7 @@ namespace Shoop.Infrastructure.Repositories
         {
             try
             {
-                var users = await _userContext.Users.ToListAsync();
+                var users = await _userContext.Users.AsNoTracking().ToListAsync();
                 return users;
             }
             catch (System.Exception)

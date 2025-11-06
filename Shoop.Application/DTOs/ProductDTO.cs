@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Shoop.Domain.Entities;
 
 namespace Shoop.Application.DTOs
 {
@@ -30,7 +31,7 @@ namespace Shoop.Application.DTOs
 
         // Propriedades de relacionamento
         public int CategoryId { get; set; }
-        // public Category? Category { get; set; }
+        public Category? Category { get; set; } //trazer tudo de category
 
     }
 }

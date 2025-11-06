@@ -28,6 +28,7 @@ namespace Shoop.Application.Services
         public async Task<ProductDTO> GetById(int? id)
         {
             var productEntity = await _productRepository.GetByIdAsync(id);
+            //  GetByIdAsync no Repositório agora tem o .Include())
             return _mapper.Map<ProductDTO>(productEntity);
 
         }
@@ -36,7 +37,9 @@ namespace Shoop.Application.Services
         {
             try
             {
-                var productEntity = await _productRepository.GetProductsAsync();
+                //  Chamando o método do Repositório que contém o .Include(p => p.Category) 
+                var productEntity = await _productRepository.GetProductsWithCategoryAsync();
+                // Mapeamento de Entidade -> DTO (O AutoMapper fará o mapeamento da Category inclusa)
                 var productDto = _mapper.Map<IEnumerable<ProductDTO>>(productEntity);
                 return productDto;
             }
