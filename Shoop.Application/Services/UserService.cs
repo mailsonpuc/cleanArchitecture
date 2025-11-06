@@ -22,11 +22,14 @@ namespace Shoop.Application.Services
 
 
 
+
         public async Task Add(UserDTO userDTO)
         {
+            // A senha JÁ DEVE SER UM HASH aqui (vindo do Controller)
             var userEntity = _mapper.Map<User>(userDTO);
-            await _userRepository.CreateAsync(userEntity);
 
+            await _userRepository.CreateAsync(userEntity);
+            userDTO.Id = userEntity.Id;
         }
 
         public async Task<UserDTO> GetById(int? id)
@@ -64,5 +67,14 @@ namespace Shoop.Application.Services
             var userEntity = _mapper.Map<User>(userDTO);
             await _userRepository.UpdateAsync(userEntity);
         }
+
+
+
+        public async Task<UserDTO> GetByUsername(string username)
+        {
+            var userEntity = await _userRepository.GetByUsername(username);
+            return _mapper.Map<UserDTO>(userEntity);
+        }
+
     }
 }

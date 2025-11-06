@@ -27,10 +27,26 @@ namespace Shoop.Infrastructure.Repositories
 
         public async Task<User> GetByIdAsync(int? id)
         {
-#pragma warning disable CS8603 // Possible null reference return.
+           #pragma warning disable CS8603
+
             return await _userContext.Users.FindAsync(id);
-#pragma warning restore CS8603 // Possible null reference return.
+            
+           #pragma warning restore CS8603 
         }
+
+
+        public async Task<User> GetByUsername(string username)
+        {
+            // O FirstOrDefaultAsync retorna o primeiro User ou null se não encontrar
+            #pragma warning disable CS8603
+
+            return await _userContext.Users
+                .AsNoTracking() // recomendado para consultas de leitura
+                .FirstOrDefaultAsync(u => u.Username == username);
+                
+            #pragma warning restore CS8603 
+        }
+
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {

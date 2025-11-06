@@ -12,5 +12,7 @@ namespace Shoop.Application.Interfaces
         Task Update(UserDTO userDTO);
         Task Remove(int? id);
 
+        Task<UserDTO> GetByUsername(string username); //autentica
+
     }
 }

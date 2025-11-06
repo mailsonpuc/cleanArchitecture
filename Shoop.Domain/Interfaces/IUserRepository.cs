@@ -11,5 +11,6 @@ namespace Shoop.Domain.Interfaces
         Task<User> CreateAsync(User user);
         Task<User> UpdateAsync(User user);
         Task<User> RemoveAsync(User user);
+        Task<User> GetByUsername(string username);
     }
 }

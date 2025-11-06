@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shoop.APi.Services;
 using Shoop.Application.DTOs;
 using Shoop.Application.Interfaces;
 
@@ -7,6 +9,7 @@ namespace Shoop.APi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -18,8 +21,11 @@ namespace Shoop.APi.Controllers
             _mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Apenas admin [Authorize(Roles = "admin")]
+        /// </summary>
         [HttpGet()]
+        [Authorize(Roles = "admin")]
         [ResponseCache(VaryByHeader = "User-Agent", Location = ResponseCacheLocation.Any, Duration = 30)] //30 segundos
         public async Task<ActionResult<IEnumerable<UserDTO>>> Get()
         {
@@ -57,6 +63,7 @@ namespace Shoop.APi.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Post([FromBody] UserDTO userDto)
         {
             if (userDto == null)
@@ -155,5 +162,43 @@ namespace Shoop.APi.Controllers
 
             return NoContent();
         }
+
+
+
+
+        [HttpPost("login")]
+        [AllowAnonymous] 
+        public async Task<ActionResult<dynamic>> Authenticate([FromBody] UserDTO userLoginDto)
+        {
+            // 1. Buscar usuário pelo nome de usuário
+            var userDto = await _userService.GetByUsername(userLoginDto.Username);
+
+            if (userDto == null)
+            {
+                return NotFound(new { message = "Usuário ou senha inválidos" });
+            }
+
+            // VERIFICAÇÃO DA SENHA COM BCrypt.Verify
+            // Compara a senha em texto puro do login com o hash armazenado (userDto.Password)
+            if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, userDto.Password))
+            {
+                // Se a senha não for válida (hash não confere)
+                return NotFound(new { message = "Usuário ou senha inválidos" });
+            }
+
+            //  Gerar Token e Retornar
+            var token = TokenService.GenerateToken(userDto);
+
+            // Retorna os dados do usuário (sem a senha!) e o token
+            // (Ajusta o UserDTO para garantir que a senha não seja serializada na resposta final)
+            userDto.Password = null;
+
+            return Ok(new
+            {
+                user = userDto,
+                token = token
+            });
+        }
+
     }
 }
