@@ -18,12 +18,12 @@ namespace Shoop.Application.Services
             _mapper = mapper;
         }
 
-        public async Task Add(ProductDTO productDTO)
-        {
-            var productEntity = _mapper.Map<Product>(productDTO);
-            await _productRepository.CreateAsync(productEntity);
+        // public async Task Add(ProductDTO productDTO)
+        // {
+        //     var productEntity = _mapper.Map<Product>(productDTO);
+        //     await _productRepository.CreateAsync(productEntity);
 
-        }
+        // }
 
         public async Task<ProductDTO> GetById(int? id)
         {
@@ -61,6 +61,13 @@ namespace Shoop.Application.Services
             var productEntity = _mapper.Map<Product>(productDTO);
             await _productRepository.UpdateAsync(productEntity);
 
+        }
+
+        public async Task Add(ProductInputDTO productDTO)
+        {
+            
+            var productEntity = _mapper.Map<Product>(productDTO);
+            await _productRepository.CreateAsync(productEntity);
         }
     }
 }

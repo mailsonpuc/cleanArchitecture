@@ -16,6 +16,10 @@ namespace Shoop.Application.Mappings
 
             CreateMap<CategoryInputDTO, CategoryDTO>().ReverseMap();
             CreateMap<CategoryInputDTO, Category>().ReverseMap();
+
+
+            CreateMap<ProductInputDTO, ProductDTO>().ReverseMap();
+            CreateMap<ProductInputDTO, Product>().ReverseMap();
         }
     }
 }

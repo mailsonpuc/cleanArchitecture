@@ -30,6 +30,12 @@ namespace Shoop.APi.Controllers
                 return NoContent();
             }
 
+            //  CHAMA A GERAÇÃO DE LINKS PARA CADA ITEM DA LISTA
+            foreach (var produto in products)
+            {
+                GerarLinks(produto);
+            }
+
 
             return Ok(products);
         }
@@ -46,24 +52,24 @@ namespace Shoop.APi.Controllers
                 return NotFound(new { message = $"Produto com id={id} não encontrado." });
             }
 
-            // GerarLinks(categoria); // Mantenha ou remova, dependendo se você usa HATEOAS
+            GerarLinks(product);
 
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ProductDTO productDto)
+        public async Task<ActionResult> Post([FromBody] ProductInputDTO productInputDto)
         {
 
-            if (productDto == null)
+            if (productInputDto == null)
             {
                 return BadRequest("Dados do produto inválidos.");
             }
 
-            await _productService.Add(productDto);
+            await _productService.Add(productInputDto);
 
             return new CreatedAtRouteResult("GetProduct",
-                new { id = productDto.Id }, productDto);
+                new { id = productInputDto.Id }, productInputDto);
         }
 
 
@@ -102,5 +108,34 @@ namespace Shoop.APi.Controllers
 
             return NoContent();
         }
+
+
+
+        private void GerarLinks(ProductDTO model)
+        {
+            if (model.Id > 0)
+            {
+                model.Links.Add(new LinkDto(
+                    href: Url.Link("GetProduct", new { id = model.Id })!,
+                    rel: "self",
+                    metodo: "GET"
+                ));
+
+
+                model.Links.Add(new LinkDto(
+                    href: Url.Link("GetProduct", new { id = model.Id })!,
+                    rel: "update_product",
+                    metodo: "PUT"
+                ));
+
+
+                model.Links.Add(new LinkDto(
+                    href: Url.Link("GetProduct", new { id = model.Id })!,
+                    rel: "delete_product",
+                    metodo: "DELETE"
+                ));
+            }
+        }
+
     }
 }

@@ -5,10 +5,10 @@ using Shoop.Domain.Entities;
 
 namespace Shoop.Application.DTOs
 {
-    public class ProductDTO : LinksHATEOAS
+    public class ProductInputDTO
     {
+     
         public int Id { get; set; }
-
 
 
         [Required(ErrorMessage = "Informe o titulo")]
@@ -31,7 +31,6 @@ namespace Shoop.Application.DTOs
 
         // Propriedades de relacionamento
         public int CategoryId { get; set; }
-        public Category? Category { get; set; } //trazer tudo de category
-
+        // public Category? Category { get; set; }   
     }
 }
