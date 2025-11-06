@@ -17,17 +17,15 @@ public static class DependencyInjectionAPI
     {
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseInMemoryDatabase("DataBase"));
 
-        // 🟢 1. REPOSITÓRIOS (CAMADA INFRAESTRUTURA) - DESCOMENTADOS! 🟢
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
 
-        // 🟢 2. SERVICES (CAMADA APPLICATION) - OK 🟢
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
 
-        // 3. AutoMapper - OK
+        // AutoMapper
         services.AddAutoMapper(typeof(DomainToDTOMappingProfile).Assembly);
 
         return services;

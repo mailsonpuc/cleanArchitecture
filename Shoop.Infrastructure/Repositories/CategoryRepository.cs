@@ -26,9 +26,9 @@ namespace Shoop.Infrastructure.Repositories
         public async Task<Category> GetByIdAsync(int? id)
         {
 
-#pragma warning disable CS8603 // Possible null reference return.
+            #pragma warning disable CS8603 
             return await _categoryContext.Categories.FindAsync(id);
-#pragma warning restore CS8603 // Possible null reference return.
+            #pragma warning restore CS8603 
         }
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()

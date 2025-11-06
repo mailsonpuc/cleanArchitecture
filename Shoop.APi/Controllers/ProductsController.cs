@@ -25,20 +25,19 @@ namespace Shoop.APi.Controllers
         {
             var products = await _productService.GetProducts();
 
-            // Boa prática: Retornar 204 No Content se a lista estiver vazia.
             if (products == null || !products.Any())
             {
-                return NoContent(); // Status 204
+                return NoContent();
             }
 
-            // Retorna a lista de DTOs com Status 200 OK
-            return Ok(products); 
+
+            return Ok(products);
         }
 
         [HttpGet("{id}", Name = "GetProduct")]
         public async Task<ActionResult<ProductDTO>> Get(int id)
         {
-            // O Service deve chamar um método que inclua a Category (GetByIdAsync no Repositório)
+
             var product = await _productService.GetById(id);
 
             if (product == null)
@@ -55,21 +54,19 @@ namespace Shoop.APi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductDTO productDto)
         {
-            // Validação de entrada
+
             if (productDto == null)
             {
                 return BadRequest("Dados do produto inválidos.");
             }
-            
-            // Note que o Service irá criar o produto e preencher o Id
+
             await _productService.Add(productDto);
 
-            // Retorna 201 CreatedAtRoute com a URI do novo recurso
             return new CreatedAtRouteResult("GetProduct",
                 new { id = productDto.Id }, productDto);
         }
-        
-        // Exemplo de Put (Atualização)
+
+
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductDTO productDto)
         {
@@ -97,14 +94,13 @@ namespace Shoop.APi.Controllers
 
             if (product == null)
             {
-                // Se o produto não existir, retorna 404
+
                 return NotFound();
             }
 
             await _productService.Remove(id);
 
-            // Retorna 204 No Content após uma exclusão bem-sucedida
-            return NoContent(); 
+            return NoContent();
         }
     }
 }

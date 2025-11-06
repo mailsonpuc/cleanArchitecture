@@ -45,7 +45,6 @@ namespace Shoop.Infrastructure.Repositories
         public async Task<Product> GetByIdAsync(int? id)
         {
             #pragma warning disable CS8603
-            // É comum adicionar .Include() aqui se o GetById precisar da Category
             return await _productContext.Products
                 .Include(p => p.Category)
                 .AsNoTracking()

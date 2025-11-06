@@ -34,7 +34,7 @@ namespace Shoop.APi.Controllers
 
             if (categorias == null || !categorias.Any())
             {
-                return NoContent(); // Resposta HTTP 204 se não houver conteúdo
+                return NoContent();
             }
 
             //  CHAMA A GERAÇÃO DE LINKS PARA CADA ITEM DA LISTA
@@ -66,22 +66,6 @@ namespace Shoop.APi.Controllers
         }
 
 
-
-        // [HttpPost]
-        // public async Task<ActionResult> Post([FromBody] CategoryInputDTO categoriaDto)
-        // {
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return BadRequest(ModelState);
-        //     }
-
-        //     var categoriaDto = _mapper.Map<CategoryDTO>(categoriaInputDto);
-
-        //     await _categoryService.Add(categoriaDto);
-
-        //     return new CreatedAtRouteResult("GetCategoria",
-        //         new { id = categoriaDto.Id }, categoriaDto);
-        // }
 
 
         [HttpPost]
@@ -153,21 +137,20 @@ namespace Shoop.APi.Controllers
         {
             if (model.Id > 0)
             {
-                // Link SELF (GET) - Usa o nome da rota "GetCategoria"
                 model.Links.Add(new LinkDto(
                     href: Url.Link("GetCategoria", new { id = model.Id })!,
                     rel: "self",
                     metodo: "GET"
                 ));
 
-                // Link de ATUALIZAÇÃO (PUT)
+
                 model.Links.Add(new LinkDto(
                     href: Url.Link("GetCategoria", new { id = model.Id })!,
                     rel: "update_category",
                     metodo: "PUT"
                 ));
 
-                // Link de DELEÇÃO (DELETE)
+
                 model.Links.Add(new LinkDto(
                     href: Url.Link("GetCategoria", new { id = model.Id })!,
                     rel: "delete_category",

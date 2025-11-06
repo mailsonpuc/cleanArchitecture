@@ -86,26 +86,7 @@ namespace Shoop.APi.Controllers
 
 
 
-        // [HttpPut("{id}")]
-        // public async Task<ActionResult> Put(int id, [FromBody] UserDTO userDto)
-        // {
-        //     if (id != userDto.Id)
-        //     {
-        //         return BadRequest("ID da rota não corresponde ao ID do corpo.");
-        //     }
-
-        //     if (userDto == null)
-        //     {
-        //         return BadRequest("Dados inválidos.");
-        //     }
-
-        //     await _userService.Update(userDto);
-
-        //     // Retorna 204 No Content após uma atualização bem-sucedida (boa prática REST)
-        //     return NoContent();
-        // }
-        // --- Método PUT com Lógica de Hashing Condicional ---
-
+     
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] UserDTO userDto)
         {
