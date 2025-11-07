@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # Serviço da API ASP.NET Core
+  api:
+    build:
+      context: .
+      # O caminho para o Dockerfile na pasta Shoop.APi
+      dockerfile: Shoop.APi/Dockerfile 
+    container_name: shoop_api_inmemory
+    restart: always
+    ports:
+      # Mapeia a porta do host (8080) para a porta interna do container (8080)
+      - "8080:8080" 
+    environment:
+      # Variáveis de ambiente JWT (Ajuste conforme o seu Settings.cs)
+      Secret: "KoqS8n;5q£;P:9)pP^eYz3L3KLB8fN;veqRlZWj=xY%~]q>"
+      # Define a porta interna e o ambiente
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Development
