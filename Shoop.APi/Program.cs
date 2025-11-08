@@ -18,6 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+#region Swagger
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -72,8 +74,9 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+#endregion swagger
 
-// Adiciona suporte à compactação de resposta HTTP na sua aplicação
+// Adiciona suporte à compactação de resposta HTTP aplicação
 builder.Services.AddResponseCompression(options =>
 {
     // Especifica que a compressão Gzip será usada como provedora de compressão
