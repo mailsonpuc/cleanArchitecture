@@ -6,7 +6,6 @@ using Shoop.Domain.Interfaces;
 using Shoop.Infrastructure.Context;
 using Shoop.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
-using Shoop.Application.Mappings;
 using Shoop.Application.Interfaces;
 using Shoop.Application.Services;
 namespace Shoop.CrossCutting.IoC;
@@ -24,9 +23,6 @@ public static class DependencyInjectionAPI
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
-
-        // AutoMapper
-        services.AddAutoMapper(typeof(DomainToDTOMappingProfile).Assembly);
 
         return services;
     }

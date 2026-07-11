@@ -1,9 +1,7 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Shoop.Application.DTOs;
 using Shoop.Application.Interfaces;
 using Shoop.Domain.Entities;
-
 
 namespace Shoop.APi.Controllers
 {
@@ -13,12 +11,10 @@ namespace Shoop.APi.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        private readonly IMapper _mapper; //  Injete o IMapper
 
-        public CategoriesController(ICategoryService categoryService, IMapper mapper)
+        public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
-            _mapper = mapper;
         }
 
 

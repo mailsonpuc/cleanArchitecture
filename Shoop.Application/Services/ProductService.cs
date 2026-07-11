@@ -1,36 +1,24 @@
 
-using AutoMapper;
 using Shoop.Application.DTOs;
 using Shoop.Application.Interfaces;
-using Shoop.Domain.Entities;
+using Shoop.Application.Mappings;
 using Shoop.Domain.Interfaces;
 
 namespace Shoop.Application.Services
 {
     public class ProductService : IProductService
     {
-        private IProductRepository _productRepository;
-        private readonly IMapper _mapper;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;
         }
-
-        // public async Task Add(ProductDTO productDTO)
-        // {
-        //     var productEntity = _mapper.Map<Product>(productDTO);
-        //     await _productRepository.CreateAsync(productEntity);
-
-        // }
 
         public async Task<ProductDTO> GetById(int? id)
         {
             var productEntity = await _productRepository.GetByIdAsync(id);
-            //  GetByIdAsync no Repositório agora tem o .Include())
-            return _mapper.Map<ProductDTO>(productEntity);
-
+            return productEntity is null ? null! : productEntity.ToProductDTO();
         }
 
         public async Task<IEnumerable<ProductDTO>> GetProducts()
@@ -38,14 +26,12 @@ namespace Shoop.Application.Services
             try
             {
                 var productEntity = await _productRepository.GetProductsWithCategoryAsync();
-                var productDto = _mapper.Map<IEnumerable<ProductDTO>>(productEntity);
-                return productDto;
+                return productEntity.Select(product => product.ToProductDTO());
             }
             catch (System.Exception)
             {
                 throw;
             }
-
         }
 
         public async Task Remove(int? id)
@@ -53,20 +39,17 @@ namespace Shoop.Application.Services
             var productEntity = await _productRepository.GetByIdAsync(id);
             if (productEntity == null) return;
             await _productRepository.RemoveAsync(productEntity);
-
         }
 
         public async Task Update(ProductDTO productDTO)
         {
-            var productEntity = _mapper.Map<Product>(productDTO);
+            var productEntity = productDTO.ToProductEntity();
             await _productRepository.UpdateAsync(productEntity);
-
         }
 
         public async Task Add(ProductInputDTO productDTO)
         {
-            
-            var productEntity = _mapper.Map<Product>(productDTO);
+            var productEntity = productDTO.ToProductEntity();
             await _productRepository.CreateAsync(productEntity);
         }
     }
